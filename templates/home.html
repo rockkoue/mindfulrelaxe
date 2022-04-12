@@ -1,0 +1,103 @@
+{% extends ('layouts/default.html') %}
+{% block styles %}
+<link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}">
+{% endblock styles %}
+{% block body %}
+<div class="container">
+    <div class="wrapper">
+        <div class="ele">
+            <div style="display:grid;grid-template-columns: 10% 90%;">
+                <div>
+                    <span>
+                        <img src="../static/img/icon-camera-512.png" alt="" style="width:80%;height:100% ;">
+                    </span>
+                </div>
+                <div>
+                    <span id="video_record" class="d-block p-2  text-white" style="background-color: #bae9f7">
+                        <a href="{{url_for('record')}}" style="text-decoration:none">Clicked here,enable your webcame
+                            and
+                            start a record</a>
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        <img src="../static/img/undraw_video_files_fu10.svg" alt="" style="width:100%;height:85% ; ">
+                    </span>
+                </div>
+                {% if session['user'] %}
+                <div>
+                    <span id="video_upload" class="d-block p-2  text-white">
+                        <form action="{{url_for('home')}}" method="POST" enctype="multipart/form-data" id="sendvideo">
+                            <input id="input-b2" name="attachment" type="file" class="file" data-show-preview="false"
+                                accept=".mp4,.webm,.ogg,.avi">
+                        </form>
+                    </span>
+                </div>
+                {% endif %}
+                <div class="modal fade" id="exampleModalToggle" aria-hidden="true"
+                    aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Please your are not log in yet ,so log in and try again
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                {% if not session['user'] %}
+                <div>
+                    <span id="video_upload" class="d-block p-2  text-white">
+                        <form>
+                            <input id="input-b2" data-bs-toggle="modal" href="#exampleModalToggle" type="text"
+                                class="form-control" readonly
+                                value="Upload your video meditation here and wait your response">
+                        </form>
+                    </span>
+                </div>
+                {% endif %}
+                {% if error %}
+                <div></div>
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div>
+            <p><img src="../static/img/undraw_mindfulness_scgo.svg" alt="" style="float: right; width:40%; height:40%">
+            </p>
+        </div>
+        <div>
+            <p><img src="../static/img/menuimagefixe.svg" alt="" style="width:80%; height:80%"></p>
+        </div>
+        <div>
+            <p><img src="../static/img/undraw_startled.svg"
+                    style="transform: scaleX(-1); width:80%; height:80% ;float:right;" alt=""></p>
+        </div>
+    </div>
+    <div class="commentary">
+        <div style="background-color: #bae9f7; padding:1em">
+            <form method="POST" action="{{url_for('comment')}}" id="formular">
+                <div id="conter">
+                    <div class="form-group">
+                        <textarea class="form-control" id="commentstext" name="comment" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary col-lg" id="sendcomment">Send commentary</button>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
