@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.4"
 
 services:
   mindful:
@@ -7,13 +7,15 @@ services:
     image: mindful
     restart: always
     depends_on:
-      - db
+      - mindful-db
     ports:
       - "5000:5000"
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
-  db:
-    container_name: db
+      - DATABASE_URL=postgresql://postgres:postgres@mindful-db:5432/postgres
+    networks:
+      - mindful_network
+  mindful-db:
+    container_name: mindful-db
     image: postgres
     ports:
       - "5433:5432"
@@ -24,7 +26,10 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=postgres
-
+    networks:
+      - mindful_network
 volumes:
   pgdata:
 
+networks:
+        mindful_network:
